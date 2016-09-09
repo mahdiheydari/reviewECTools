@@ -1,0 +1,29 @@
+ 
+set datafile missing "n/a"
+set output "CorrNGA50Gain.pdf"
+set terminal pdf
+
+set xlabel "Error correction Gain(%)"
+set ylabel "NGA50"
+linear(start,slope,x) = start + slope*x
+
+
+set title "Correlation of Error correction gain in Human Chr 21 reads after error correction,\n with NGA50 of contigs after assembly by Spades"
+fit linear(avgstart,avgslope,x) "correlation/spades/D6.dat" using 2:4 via avgstart,avgslope
+
+print avgstart, avgslope
+plot "correlation/spades/D6.dat" using 2:4:1 with labels point pt 7 ps .5 center offset 1.5,-.2   font "sans, 7" notitle, avgstart + avgslope*x t "" w l lt 3 lw 2 
+
+
+set title "Correlation of Error correction gain in D.melanogaster reads after error correction,\n with NGA50 of contigs after assembly by Spades"
+fit linear(avgstart,avgslope,x) "correlation/spades/D8.dat" using 2:4 via avgstart,avgslope
+print avgstart, avgslope
+plot "correlation/spades/D8.dat" using 2:4:1 with labels point pt 7 ps .5 center offset 1.5,-.2   font "sans, 7" notitle, avgstart + avgslope*x t "" w l lt 3 lw 2 
+
+
+
+
+set title "Correlation of Error correction gain in Caenorhabditis elegans reads after error correction,\n with NGA50 of contigs after assembly by Spades"
+fit linear(avgstart,avgslope,x) "correlation/spades/D7.dat" using 2:4 via avgstart,avgslope
+print avgstart, avgslope
+plot "correlation/spades/D7.dat" using 2:4:1 with labels point pt 7 ps .5 center offset 1.5,-.2   font "sans, 7" notitle,  avgstart + avgslope*x t "" w l lt 3 lw 2 

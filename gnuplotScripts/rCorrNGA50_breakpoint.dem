@@ -1,0 +1,50 @@
+set output "reverseCorrNGA50_breakpoint.pdf"
+set terminal pdf
+
+set xlabel "breakpoint per Mb"
+set ylabel "NGA50"
+linear(start,slope,x) = start + slope*x
+
+
+#set title "Reverse correlation of breakpoint in Human Chr 21 reads after error correction,\n with NGA50 of contigs after assembly by Spades"
+#fit linear(avgstart,avgslope,x) "correlation/D6.dat" using 5:4 via avgstart,avgslope
+#print avgstart, avgslope
+#plot "correlation/D6.dat" using 5:4:1 with labels point pt 7 ps .5 center offset 0,.3   font "sans, 8" notitle, avgstart + avgslope*x t "" w l lt 3 lw 2 
+
+
+#set title "Reverse correlation of breakpoint in D.melanogaster reads after error correction,\n with NGA50 of contigs after assembly by Spades"
+fit linear(avgstart,avgslope,x) "correlation/spades/D8.dat" using 5:4 via avgstart,avgslope
+print avgstart, avgslope
+plot "correlation/spades/D8.dat" using 5:4:1 with labels point pt 7 ps .5 center offset 1.5,-.6  font "sans, 8" notitle, avgstart + avgslope*x t "" w l lt 3 lw 2 
+
+
+
+
+#set title "Reverse correlation of breakpoint in Caenorhabditis elegans reads after error correction,\n with NGA50 of contigs after assembly by Spades"
+#fit linear(avgstart,avgslope,x) "correlation/D7.dat" using 5:4 via avgstart,avgslope
+#print avgstart, avgslope
+#set multiplot
+#plot "correlation/D7.dat" using 5:4:1 with labels point pt 7 ps .5 center offset 1.5,-.6   font "sans, 7" notitle,  avgstart + avgslope*x t "" w l lt 3 lw 2 
+#set size 0.38,0.42
+#set origin 0.5,0.42
+#set title ""
+#set xrange [0:100]
+#set yrange [6000:6600]
+#set ytics 500000
+#set xtics 1000
+#set xlabel ""
+#set ylabel ""
+#set ytics 500
+#replot avgstart + avgslope*x t "" w l lt 3 lw 2 
+#unset multiplot
+
+
+
+
+
+
+
+
+
+
+
