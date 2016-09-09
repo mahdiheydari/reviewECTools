@@ -1,0 +1,54 @@
+set output "kmerFrequencyInner.pdf"
+set terminal pdf
+#set ytics 0.25
+#set format y "%.2f"
+set style data linespoints
+set multiplot
+ 
+
+set yrange [0:10000000]
+set xrange [0:80]
+#set title "Comparing the frequency distribution of true lost kmers after error correction \n with the frequency distribution of all the kmers before error correction"
+set xlabel "Coverage"
+set ylabel "Density"
+plot "initial/kmerFrequency.dat" using 1:2 smooth freq   lc rgb"red"  title "All",\
+      "ace/acelostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"orange"  title "ACE",\
+      "bless/blesslostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"yellow"  title "BLESS2",\
+      "blue/bluelostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"green"  title "Blue",\
+      "bfc/bfclostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"cyan"  title "BFC",\
+      "bayesHammer/bayesHammerlostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"blue"  title "BayesHammer",\
+      "fiona/fionalostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"gold"  title "Fiona",\
+      "karect/karectlostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"grey"  title "Karect",\
+      "lighter/lighterlostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"brown"  title "Lighter",\
+      "racer/racerlostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"olive"  title "RACER",\
+      "sga/sgalostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"#006400"  title "SGA-EC",\
+      "trowel/trowellostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"#FF00FF"  title "Trowel",\
+      "musket/musketlostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"#FF000F"  title "Musket"
+  
+      
+      
+set size 0.6,0.35
+set origin 0.15,0.6
+set title ""
+set xrange [0:13]
+set yrange [0:700000]
+set ytics 500000
+set xlabel ""
+set ylabel ""
+
+set grid
+
+plot "initial/kmerFrequency.dat" using 1:2 smooth freq   lc rgb"red"  notitle,\
+      "ace/acelostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"orange"  notitle,\
+      "bless/blesslostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"yellow"  notitle,\
+      "blue/bluelostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"green"  notitle,\
+      "bfc/bfclostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"cyan"  notitle,\
+      "bayesHammer/bayesHammerlostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"blue"  notitle,\
+      "fiona/fionalostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"gold"  notitle,\
+      "karect/karectlostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"grey"  notitle,\
+      "lighter/lighterlostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"brown"  notitle,\
+      "racer/racerlostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"olive"  notitle,\
+      "sga/sgalostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"#006400"  notitle,\
+      "trowel/trowellostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"#FF00FF"  notitle,\
+      "musket/musketlostTrueKmerFreq21.dat" using 1:2 smooth freq   lc rgb"#FF000F"  notitle
+unset multiplot 
