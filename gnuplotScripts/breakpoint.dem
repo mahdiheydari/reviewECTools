@@ -1,0 +1,133 @@
+
+
+### n: change this parameter to equal the number of data sets to be plotted
+n = 12
+# t: top margin in pixels
+t = 75.0
+# b: key height in pixels (bottom margin)
+b = 300.0
+# h: height of output in pixels
+h = 150.0*n + t + b
+
+### define functions to help set top/bottom margins
+top(i,n,h,t,b) = 1.0 - (t+(h-t-b)*(i-1)/n)/h
+bot(i,n,h,t,b) = 1.0 - (t+(h-t-b)*i/n)/h
+
+### first set up some basic plot parameters
+#set term pngcairo enhanced size 800,h font 'FreeMono-Bold,14'
+set output "test2.pdf"
+set terminal pdf
+#set title 'BreakPoints'
+unset colorbox
+set palette defined (1 "#8dd3c7", 2 "#ffffb3", 3 "#bebada", 4 "#fb8072", 5 "#80b1d3", 6 "#fdb462", 7 "#b3de69", 8 "#fccde5", 9 "#d9d9d9", 10 "#bc80bd", 11 "#ccebc5" )
+#set cbrange[1:11]
+set style data histogram
+set style histogram cluster gap 1
+set style fill solid
+set ytics 100
+set xrange [-5000:410000]
+set yrange [-.7:10] 
+set ytics format ''
+set xtics format ''
+set multiplot layout (n+1),1
+##---------------------------------------------------------------------
+set ylabel "ACE" font "sans, 5"
+currentplot = 1
+set tmargin at screen top(currentplot,n,h,t,b)
+set bmargin at screen bot(currentplot,n,h,t,b)
+unset key
+plot "ace/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+##---------------------------------------------------------------------
+set ylabel "BayesHammer" font "sans, 5"
+currentplot = currentplot + 1
+set tmargin at screen top(currentplot,n,h,t,b)
+set bmargin at screen bot(currentplot,n,h,t,b)
+unset title
+plot "bayesHammer/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+##---------------------------------------------------------------------     
+set ylabel "BFC" font "sans, 5"
+currentplot = currentplot + 1
+set tmargin at screen top(currentplot,n,h,t,b)
+set bmargin at screen bot(currentplot,n,h,t,b)
+unset title
+plot "bfc/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+
+##---------------------------------------------------------------------
+set ylabel "BLESS2" font "sans, 5"
+currentplot = currentplot + 1
+set tmargin at screen top(currentplot,n,h,t,b)
+set bmargin at screen bot(currentplot,n,h,t,b)
+unset key
+plot "bless/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+##---------------------------------------------------------------------     
+set ylabel "Blue" font "sans, 5"
+currentplot = currentplot + 1
+set tmargin at screen top(currentplot,n,h,t,b)
+set bmargin at screen bot(currentplot,n,h,t,b)
+unset title
+unset key
+plot "blue/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+
+##---------------------------------------------------------------------
+set ylabel "Fiona" font "sans, 5"
+currentplot = currentplot + 1
+set tmargin at screen top(currentplot,n,h,t,b)
+set bmargin at screen bot(currentplot,n,h,t,b)
+unset key
+plot "fiona/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+##---------------------------------------------------------------------     
+set ylabel "Karect" font "sans, 5"
+currentplot = currentplot + 1
+set tmargin at screen top(currentplot,n,h,t,b)
+set bmargin at screen bot(currentplot,n,h,t,b)
+unset title
+plot "karect/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+
+##---------------------------------------------------------------------
+set ylabel "Lighter" font "sans, 5"
+currentplot = currentplot + 1
+set tmargin at screen top(currentplot,n,h,t,b)
+set bmargin at screen bot(currentplot,n,h,t,b)
+unset key
+plot "lighter/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+##---------------------------------------------------------------------     
+set ylabel "Musket" font "sans, 5"
+currentplot = currentplot + 1
+set tmargin at screen top(currentplot,n,h,t,b)
+set bmargin at screen bot(currentplot,n,h,t,b)
+unset title
+plot "musket/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+##---------------------------------------------------------------------
+
+set ylabel "RACER" font "sans, 5"
+currentplot = currentplot + 1
+set tmargin at screen top(currentplot,n,h,t,b)
+set bmargin at screen bot(currentplot,n,h,t,b)
+unset key
+plot "racer/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+##---------------------------------------------------------------------     
+set ylabel "SGA-EC" font "sans, 5"
+currentplot = currentplot + 1
+set tmargin at screen top(currentplot,n,h,t,b)
+set bmargin at screen bot(currentplot,n,h,t,b)
+unset title
+plot "sga/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+
+##---------------------------------------------------------------------
+set ylabel "Trowel" font "sans, 5"
+currentplot = currentplot + 1
+set tmargin at screen top(currentplot,n,h,t,b)
+set bmargin at screen bot(currentplot,n,h,t,b)
+set xlabel 'bp'
+set xtics format "%10.0f"
+set xtics font ", 8"
+set xtics 50000
+plot "trowel/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+##---------------------------------------------------------------------
+
+
+
+
+
+
+unset multiplot
