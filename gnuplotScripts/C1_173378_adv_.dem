@@ -1,0 +1,39 @@
+constant=173378
+set output "C1_173378_adv.pdf"
+set terminal pdf
+set xlabel "bp"
+set multiplot
+set ylabel "Kmer Coverage ( k = 21 )"  font ",11"
+set y2label "Kmer Coverage ( k = 31 )"  font ",11"
+set ytics nomirror
+set y2tics
+set tics out
+
+set xrange [173340:173400]
+set yrange [0:230]
+set y2range [0:30]
+set xtics 30
+set key font ", 10"
+set xtics font ", 8"
+set ytics font ", 8"
+set y2tics font ", 8"
+set label 1 at 173359, 223 rotate by -90 left
+set label 1 "TGTGGTGGGGGGGGGGGGGGG" tc lt 1  font "sans, 6" 
+
+plot "21_1.fasta" using 1:3 smooth freq   lc rgb "#1b9e77"  title "k = 21" axes x1y1,\
+     "31_1.fasta" using 1:3 smooth freq   lc rgb "#d95f02"  title "k = 31" axes x1y2,\
+     "21_1.fasta" using 1:2 smooth freq   lc rgb "#e7298a"  title "lost kmer ( k = 21 )" axes x1y1
+
+set label 2 at 173362, 100 rotate by -90 left
+set label 2 "TGGGGGGGGGGGGGGGAAACT" tc lt 2  font "sans, 6" 
+
+
+set parametric
+set xtics font ", 8"
+set trange [0:230]
+set xtics add ("breakpoint" constant)
+plot constant,t ls 7 lw 2 notitle
+unset parametric
+
+    
+    

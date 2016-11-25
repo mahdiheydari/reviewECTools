@@ -1,0 +1,33 @@
+set output "C2_271180_adv.pdf"
+set terminal pdf
+constant=271180
+set xlabel "bp"
+
+set ylabel "Kmer Coverage"  font ",11"
+set ytics nomirror
+set tics out
+set xrange [271027:271627]
+set yrange [0:40]
+
+set key font ", 10"
+set xtics font ", 8"
+set ytics font ", 8"
+set xtics 180
+set multiplot 
+#set label 1 at 338883, 1 
+#set label 1 "CGGCCAGCTGGCTTTGTGCAAAGCCTGCCGCCACATTAAG" tc lt 1  font "sans, 5" 
+
+plot "21_2.fasta" using 1:3 smooth freq   lc rgb "#1b9e77" title "k=21"  ,\
+     "31_2.fasta" using 1:3 smooth freq   lc rgb "#d95f02"  title "k=31"
+
+
+
+set parametric
+set xtics font ", 8"
+set trange [0:40]
+set xtics add ("breakpoint" constant)
+plot constant,t ls 7 lw 2 notitle
+unset parametric
+
+unset multiplot
+
