@@ -1,0 +1,63 @@
+	set output "/home/mahdi/haloServerTables/real/quastPlot/spades/D8/NGA50.pdf"
+	set style data lines
+	set terminal pdf
+	set termoption dash
+	set style data linespoints
+	set termoption dash
+	set arrow from 50,90 to 48,140 lw 1 back filled
+	set multiplot
+	set arrow from 45,18 to 55.0,18 lw 1 front nohead  
+	set arrow from 55,18 to 55,65  lw 1 front nohead        
+	set arrow from 45,65 to 55,65  lw 1 front nohead
+	set arrow from 45,18 to 45,65  lw 1 front nohead 
+	
+	
+	set yrange [0:]
+	set xrange [0:100]
+	set ytics 100
+	set xtics 10
+	#set title "NGAx for $name reads, assembled by Spades"
+	set ylabel "Contig length NGAx (Kbp)"
+	set xlabel "x"
+	set datafile separator "\t"
+	
+	plot"/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/initial" using 1:2 smooth freq   lc rgb"black"  title "Uncorrected",\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/ace" using 1:2   smooth freq   lc rgb"#1f78b4" title "ACE",\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/bayesHammer" using 1:2   smooth freq   lc rgb"#e31a1c" title "BayesHammer",\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/bfc" using 1:2   smooth freq   lc rgb"#fb9a99" title "BFC",\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/bless" using 1:2  smooth freq   lc rgb"#b2df8a"  title "BLESS2",\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/blue" using 1:2   smooth freq   lc rgb"#33a02c" title "Blue",\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/fiona" using 1:2  smooth freq   lc rgb "#fdbf6f" title "Fiona",\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/karect" using 1:2   smooth freq   lc rgb"#ff7f00" title "Karect",\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/lighter" using 1:2   smooth freq   lc rgb"#cab2d6" title "Lighter",\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/musket" using 1:2  smooth freq   lc rgb "#6a3d9a" title "Musket",\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/racer" using 1:2  smooth freq   lc rgb"#ffff99" title "RACER",\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/sga" using 1:2  smooth freq   lc rgb"#a6cee3" title "SGA-EC",\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/trowel" using 1:2  smooth freq   lc rgb"#FF00FF" title "Trowel"
+
+	set grid
+	set size 0.35,0.53
+	set origin 0.32,0.36
+	set xrange [45:55]
+	set yrange [18:65]
+	set xtics 5
+	set ytics 20
+	set title ""
+	set ylabel ""
+	set xlabel ""
+	set datafile separator "\t"
+	plot"/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/initial" using 1:2  smooth freq  lw 2 lc rgb"black"  notitle,\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/ace" using 1:2   smooth freq lw 2  lc rgb"#1f78b4" notitle,\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/bayesHammer" using 1:2   smooth freq  lw 2 lc rgb"#e31a1c" notitle,\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/bfc" using 1:2   smooth freq lw 2  lc rgb"#fb9a99" notitle,\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/bless" using 1:2  smooth freq  lw 2 lc rgb"#b2df8a"  notitle,\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/blue" using 1:2   smooth freq  lw 2 lc rgb"#33a02c" notitle,\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/fiona" using 1:2  smooth freq  lw 2 lc rgb "#fdbf6f" notitle ,\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/karect" using 1:2   smooth freq  lw 2 lc rgb"#ff7f00" notitle,\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/lighter" using 1:2   smooth freq lw 2  lc rgb"#cab2d6" notitle,\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/musket" using 1:2  smooth freq lw 2  lc rgb "#6a3d9a" notitle,\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/racer" using 1:2  smooth freq  lw 2 lc rgb"#ffff99" notitle ,\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/sga" using 1:2  smooth freq  lw 2 lc rgb"#a6cee3" notitle ,\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/trowel" using 1:2  smooth freq lw 2  lc rgb"#FF00FF" notitle 
+	    
+	unset multiplot 
