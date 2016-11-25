@@ -1,10 +1,22 @@
 set terminal pdf
 set output "out.pdf"
+
+ set linetype  1 lc rgb "#f46d43" lw 1
+ set linetype  2 lc rgb "#74add1" lw 1
+ set linetype  3 lc rgb "#fdae61" lw 1
+ set linetype  4 lc rgb "#abd9e9" lw 1
+ set linetype  5 lc rgb "#fee090" lw 1
+ set linetype  6 lc rgb "#ffffbf" lw 1
+ set linetype  7 lc rgb "#4575b4" lw 1
+ set linetype  8 lc rgb "#d73027" lw 1
+
+
+
 set boxwidth 0.75 absolute
 set style fill   solid 1.00 border lt -1
 set key outside right top vertical Left reverse noenhanced autotitle columnhead nobox
 set key invert samplen 4 spacing 1 width 0 height 0 
-set style histogram rowstacked title textcolor lt -1
+
 set datafile missing '-'
 set style data histograms
 set xtics border in scale 0,0 nomirror rotate by -45  autojustify
@@ -14,36 +26,10 @@ set yrange [45:100]
 set title "" 
 x = 0.0
 i = 22
-#set xlabel "Error Correction Tool "
-#set ylabel "Percentage of aligned reads"
-#set title "Alignment percentage of reads in B. dentium after error correciton by different tools. "
-#plot 'countMismatch/D1_per_.dat' using 2:xtic(1), for [i=3:4] '' using i
-#set xlabel "Error Correction Tool "
-#set ylabel "Percentage of aligned reads"
-#set title "Alignment percentage of reads in E. coli str. K-12 substr. DH10B after error correciton by different tools. "
-#plot 'countMismatch/D2_per_.dat' using 2:xtic(1), for [i=3:4] '' using i 
-#set xlabel "Error Correction Tool "
-#set ylabel "Percentage of aligned reads"
-#set title "Alignment percentage of reads in E. coli str. K-12 substr. MG1655 after error correciton by different tools. "
-#plot 'countMismatch/D3_per_.dat' using 2:xtic(1), for [i=3:4] '' using i 
-#set xlabel "Error Correction Tool "
-#set ylabel "Percentage of aligned reads"
-#set title "Alignment percentage of reads in S.enterica after error correciton by different tools. "
-#plot 'countMismatch/D4_per_.dat' using 2:xtic(1), for [i=3:4] '' using i 
-#set xlabel "Error Correction Tool "
-#set ylabel "Percentage of aligned reads"
-#set title "Alignment percentage of reads in Pseudomonas aeruginosa after error correciton by different tools. "
-#plot 'countMismatch/D5_per_.dat' using 2:xtic(1), for [i=3:4] '' using i 
-#set xlabel "Error Correction Tool "
-#set ylabel "Percentage of aligned reads"
-#set title "Alignment percentage of reads in Human Chr 21 after error correciton by different tools. "
-#plot 'countMismatch/D6_per_.dat' using 2:xtic(1), for [i=3:4] '' using i 
-#set xlabel "Error Correction Tool "
-#set ylabel "Percentage of aligned reads"
-#set title "Alignment percentage of reads in C. elegans after error correciton by different tools. "
-#plot 'countMismatch/D7_per_.dat' using 2:xtic(1), for [i=3:4] '' using i 
-set xlabel "Error Correction Tool "
-set ylabel "Percentage of aligned reads"
-#set title "Alignment percentage of reads in D.melanogaster after error correciton by different tools. "
-plot 'countMismatch/D8_per_.dat' using 2:xtic(1), for [i=3:4] '' using i 
 
+set style histogram rowstacked title textcolor palette
+set xtics font ", 8"
+set ytics font ", 8"
+set ylabel "Alignment Rate"
+#set title "Alignment percentage of reads in D.melanogaster after error correciton by different tools. "
+plot newhistogram  lt 1 ,  'countMismatch/D8_per_.dat' using 2:xtic(1) , for [i=3:7] '' using i 
