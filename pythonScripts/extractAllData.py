@@ -32,6 +32,36 @@ class Result:
     mismatchRate=""
     indelsRate=""
 assembler = ['spades', 'idba', 'minia', 'velvet', 'discovar']
+def changeMethodsName(inputName):
+    if (inputName=="ace" ):
+	return "ACE"
+    if (inputName=="blue" ):
+	return "Blue"
+    if (inputName=="bless" ):
+	return "BLESS2"    
+    if (inputName=="bayesHammer" ):
+	return "BayesHammer"                
+    if (inputName=="bfc" ):
+	return "BFC"
+    if (inputName=="musket" ):
+	return "Musket"
+    if (inputName=="lighter" ):
+	return "Lighter"
+    if (inputName=="karect" ):
+	return "Karect"                
+    if (inputName=="fiona" ):
+	return "Fiona"
+    if (inputName=="trowel" ):
+	return "Trowel"
+    if (inputName=="racer" ):
+	return "RACER"
+    if (inputName=="sga" ):
+	return "SGA-EC"
+    if (inputName=="initial" ):
+	return "Uncorrected"
+    if (inputName=="Uncorrected" ):
+	return "Uncorrected"
+
 def find_between( s, first, last ):
     try:
         start = s.index( first ) + len( first )
@@ -57,7 +87,7 @@ def connectDebruijnToAssembly(methodNameSet,genomeNameSet,results):
                             r.gain='n/a'
                     if (r.method==m and r.genomeName==g and r.assemeblerName==ass ):
 			#print(r.method)
-                        row=m+"\t\t"+str(r.NGA50)+'\t\t'+str(r.GenomeFraction)+'\t\t'+str(r.mismatchRate)+'\t\t'+str(r.indelsRate)+"\t\t"+str(r.breakpointsRel)+"\t\t"+str(r.kmerLostRel)+"\t\t"+str( r.gain)
+                        row=changeMethodsName(m)+"\t\t"+str(r.NGA50)+'\t\t'+str(r.GenomeFraction)+'\t\t'+str(r.mismatchRate)+'\t\t'+str(r.indelsRate)+"\t\t"+str(r.breakpointsRel)+"\t\t"+str(r.kmerLostRel)+"\t\t"+str( r.gain)
                         fobw.writelines(row+'\n')
             fobw.close();
         for g in genomeNameSet:
@@ -75,7 +105,7 @@ def connectDebruijnToAssembly(methodNameSet,genomeNameSet,results):
                             r.gain='n/a' 
                         a= int(r.kmerLost)-int(base_kmerLost[0])
                         kmerlost=str (round ((int(r.kmerLost)-int (base_kmerLost[0])) *1000000/float(r.genomeSize), 2))
-                        row=m+"\t"+str( r.gain)+"\t"+kmerlost+"\t"+str(r.NGA50)+"\t"+str(r.breakpointsRel)
+                        row=changeMethodsName(m)+"\t"+str( r.gain)+"\t"+kmerlost+"\t"+str(r.NGA50)+"\t"+str(r.breakpointsRel)
                         fobw.writelines(row+'\n')
             fobw.close();
 def MakeNGA50ColorTable(results,methodNameSet,genomeNameSet,assembler, outFileName):
@@ -88,7 +118,11 @@ def MakeNGA50ColorTable(results,methodNameSet,genomeNameSet,assembler, outFileNa
     fobw.writelines(" \\usepackage{datetime} \r")
     fobw.writelines(" \\usepackage{booktabs} \r")
     fobw.writelines("\\usepackage{colortbl,dcolumn} ")
-
+    fobw.writelines("\definecolor{darkgreen}{RGB}{26,152,80}")
+    fobw.writelines("\definecolor{lightgreen}{RGB}{166,217,106}")
+    fobw.writelines("\definecolor{lightorange}{RGB}{253,174,97}")
+    fobw.writelines("\definecolor{darkorange}{RGB}{215,48,39}")
+    fobw.writelines("\definecolor{white}{RGB}{255,255,191}")    
     c='a'
     for g in genomeNameSet:
         #print(g)
@@ -96,14 +130,21 @@ def MakeNGA50ColorTable(results,methodNameSet,genomeNameSet,assembler, outFileNa
         temp= [item.NGA50 for item in results if item.method == 'Uncorrected' and item.genomeName==g and item.assemeblerName==assembler]
         if (len(temp)):
             base_NGA50=temp[0]
+            
             if (base_NGA50=="n/a"):
                 base_NGA50=0;
+            else:
+		minDiff=int (base_NGA50)/20
         fobw.writelines(" \\def\\"+c+"#1{% \r")
-        fobw.writelines(" \\ifnum0#1>"+str(int(base_NGA50)+minDiff)+ "\r")
-        fobw.writelines(" \\cellcolor{green}\\else \r")
-        fobw.writelines(" \\ifnum0#1<"+ str(int(base_NGA50)-minDiff)+"\r")
-        fobw.writelines("  \\cellcolor{red}\\else \r")
-        fobw.writelines(" \\cellcolor{yellow}\\fi\\fi\r")
+        fobw.writelines(" \\ifnum0#1="+str(int(base_NGA50))+ "\r")
+        fobw.writelines(" \\cellcolor{white}\\else \r")
+        fobw.writelines(" \\ifnum0#1>"+str(int(base_NGA50)+minDiff*2)+ "\r")
+        fobw.writelines(" \\cellcolor{darkgreen}\\else \r")
+        fobw.writelines(" \\ifnum0#1>"+str(int(base_NGA50))+ "\r")
+        fobw.writelines(" \\cellcolor{lightgreen}\\else \r")
+        fobw.writelines(" \\ifnum0#1>"+str(int(base_NGA50)-minDiff*2)+ "\r")
+        fobw.writelines(" \\cellcolor{lightorange}\\else \r")
+        fobw.writelines(" \\cellcolor{darkorange}\\fi\\fi\\fi\\fi \r")
         fobw.writelines(" #1}\r")
         c=chr(ord(c) + 1)
         
@@ -112,9 +153,7 @@ def MakeNGA50ColorTable(results,methodNameSet,genomeNameSet,assembler, outFileNa
     fobw.writelines('\\begin{document}   \r');
     fobw.writelines('\\  \\footnote{ Compiled on \\today\ at \\currenttime} \r' );
     fobw.write("\r  NGA50 of contigs assembled by "+assembler+" before and after error correction by mentioned tools. Cells in the table are\n"+
-               "colored based on the value of uncorrected row. If the tool improves the NGA50 length"+
-               "\n more than 1kb it changes to green. If it  decreases the length more than 1kb it turns to red, otherwise it remains yellow."
-               " n/a means that there are not any contig longer than 500 or the genome fraction is less than 50\%\r" );
+               "colored based on the value of uncorrected row.(change$>+10\%$  dark green, $+5\%<$change$<+10\%$  light green, change$>-10\%$  red, $-5\%<$change$<-\%10$ orange. $-5\%<$change$>+5\%$ yellow )") 
     fobw.write('\\\ \r')
     fobw.write('\\\ \r')
     fobw.write('\\begin{tabular}{' );

@@ -25,3 +25,4 @@ set output "runtime.pdf"
 set terminal pdf
 
 plot "runTime/spades/allRuntime.dat" using 2:xtic(1) title columnheader(2), for [i=3:11] '' using i title columnheader(i)  lw 1 ps .5 
+

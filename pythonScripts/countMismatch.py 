@@ -1,0 +1,81 @@
+#!/usr/bin/env python
+'''
+Copyright (C) 2016  Mahdi Heydari
+this script counts number of mismaches of corrected reaad with the reference genome and reports it in file. 
+It uses the BWA file as an input''' 
+import sys
+
+sam_fn = sys.argv[1] #"aln-se.sam"
+
+mismatch_0=0
+mismatch_1=0
+mismatch_2=0
+mismatch_3=0
+mismatch_4=0
+mismatch_5=0
+mismatch_6=0
+mismatch_7=0
+mismatch_8=0
+mismatch_9=0
+mismatch_m9=0
+
+allreads=0
+
+i=0
+for line in open(sam_fn):    
+    if line[0] == "@":
+        pass
+    else:
+        sl=[];
+        i=i+1
+        sl = line.split()
+        find =0;
+        if ("NM:i:0"==sl[11]):
+            mismatch_0=mismatch_0+1;
+            find=1;
+
+        if ("NM:i:1"==sl[11]):
+            mismatch_1=mismatch_1+1;
+            find=1;
+            
+        if ("NM:i:2"==sl[11]):
+            mismatch_2=mismatch_2+1;
+            find=1;
+            
+        if ("NM:i:3"==sl[11]):
+            mismatch_3=mismatch_3+1;
+            find=1;
+            
+        if ("NM:i:4"==sl[11]):
+            mismatch_4=mismatch_4+1;
+            find=1;
+            
+        if ("NM:i:5"==sl[11]):
+            mismatch_5=mismatch_5+1;
+            find=1;
+
+        if ("NM:i:6"==sl[11]):
+            mismatch_6=mismatch_6+1;
+            find=1; 
+        if ("NM:i:7"==sl[11]):
+            mismatch_7=mismatch_7+1;
+            find=1;
+        if ("NM:i:8"==sl[11]):
+            mismatch_8=mismatch_8+1;
+            find=1;
+        if ("NM:i:9"==sl[11]):
+            mismatch_9=mismatch_9+1;
+            find=1;
+         if (find==0):
+            mismatch_m9=mismatch_m9+1;
+                
+print ("     only 0 mismatches : <<" ,mismatch_0, ">>")
+print ("     only 1 mismatches : <<" ,mismatch_1,">>")            
+print ("     only 2 mismatches : <<" ,mismatch_2,">>")
+print ("     only 3 mismatches : <<" ,mismatch_3,">>")            
+print ("     only 4 mismatches : <<" ,mismatch_4,">>")
+print ("     only 5 mismatches : <<" ,mismatch_5,">>")
+print ("     only 6 mismatches : <<" ,mismatch_6,">>")
+print ("     only 7 mismatches : <<" ,mismatch_7,">>")            
+print ("     only 8 mismatches : <<" ,mismatch_8,">>")
+print ("     only 9 mismatches : <<" ,mismatch_9,">>")

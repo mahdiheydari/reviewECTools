@@ -2,7 +2,7 @@ set output "kmerFrequencyInner.pdf"
 set terminal pdf
 #set ytics 0.25
 set format y "%.0f" 
-set ytics font ",9"
+set ytics font "sans, 13"
 set style data linespoints
 set termoption dash
 set multiplot
@@ -11,21 +11,21 @@ set arrow from 0,0 to 13.0,0  lw 1 front nohead
 set arrow from 13.0,0 to 13.0,700000  lw 1 front nohead        
 set arrow from 0,700000 to 13.0,700000  lw 1 front nohead        
 set arrow from 11,1000000 to 15,4500000 lw 1 back filled
-set key font ",9"
+set key font "sans, 13"
 
-set xlabel font ",11"
-set ylabel font ",11"
+set xlabel font "sans, 13"
+set ylabel font "sans, 13"
 
 set yrange [0:10000000]
 set xrange [0:80]
 #set title "Comparing the frequency distribution of true lost kmers after error correction \n with the frequency distribution of all the kmers before error correction"
-set xlabel "Kmer coverage (k=21)"
+set xlabel "21-mer coverage"
 set ylabel "Number of kmers"
 plot "initial/kmerFrequency.dat" using 1:2 smooth freq lw 2  lc rgb "black"  title "All",\
       "ace/acelostTrueKmerFreq21.dat" using 1:2 smooth freq  lw 2 lc rgb"#1f78b4"  title "ACE",\
       "bayesHammer/bayesHammerlostTrueKmerFreq21.dat" using 1:2 smooth freq lw 2  lc rgb"#e31a1c"  title "BayesHammer",\
        "bfc/bfclostTrueKmerFreq21.dat" using 1:2 smooth freq  lw 2 lc rgb"#fb9a99"  title "BFC",\
-      "bless/blesslostTrueKmerFreq21.dat" using 1:2 smooth freq  lw 2 lc rgb"#b2df8a"  title "BLESS2",\
+      "bless/blesslostTrueKmerFreq21.dat" using 1:2 smooth freq  lw 2 lc rgb"#b2df8a"  title "BLESS 2",\
       "blue/bluelostTrueKmerFreq21.dat" using 1:2 smooth freq  lw 2 lc rgb"#33a02c"  title "Blue",\
       "fiona/fionalostTrueKmerFreq21.dat" using 1:2 smooth freq lw 2  lc rgb"#fdbf6f"  title "Fiona",\
       "karect/karectlostTrueKmerFreq21.dat" using 1:2 smooth freq  lw 2 lc rgb"#ff7f00"  title "Karect",\
@@ -49,7 +49,8 @@ set yrange [0:700000]
 set ytics 500000
 set xlabel ""
 set ylabel ""
-
+set ytics font "sans, 9"
+set xtics font "sans, 9"
 set grid
 
 plot "initial/kmerFrequency.dat" using 1:2 smooth freq lw 3  lc rgb "black"  notitle,\

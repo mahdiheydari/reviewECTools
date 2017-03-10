@@ -1,3 +1,6 @@
+'''
+Copyright (C) 2016  Mahdi Heydari
+This script find the uniqe reads based on the input kmer file, its better to use the sam file as an input to find the reads.'''
 import hashlib
 import sys
 import subprocess

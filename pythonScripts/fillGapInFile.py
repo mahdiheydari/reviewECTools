@@ -1,3 +1,8 @@
+'''
+Copyright (C) 2016  Mahdi Heydari
+This script remove the lines which don't have a lost true kmers 
+in the file and they are not at the begining or end of a breakpoint in the contig.
+'''
 import sys
 w=open("ouput_21.fasta", 'w')
 lines = [line.rstrip('\n') for line in open("21_2.fasta")]

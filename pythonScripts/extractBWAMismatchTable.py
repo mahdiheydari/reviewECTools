@@ -1,3 +1,7 @@
+'''
+Copyright (C) 2016  Mahdi Heydari
+This script makes the tables for the mismatches and essential files to make the plots. 
+It should be run afte running countMismatch.py'''
 import subprocess
 from math import pi
 import sys
@@ -17,11 +21,53 @@ class Result:
  _08_matches=0
  _09_matches=0
  _m9_matches=0
+ 
+ _1_2_matches=0
+ _3_5_matches=0
+ _6_9_matches=0
+ _1_9_matches=0
+ 
+ _01_matches_per=""
+ _02_matches_per=""
+ _1_2_matches_per=""
+ _3_5_matches_per=""
+ _6_9_matches_per=""
+ 
  _1_9_matches_per=""
  _00_matches_per=""
  _m9_matches_per=""
 
-
+def changeMethodsName(inputName):
+    if (inputName=="ace" ):
+	return "ACE"
+    if (inputName=="blue" ):
+	return "Blue"
+    if (inputName=="bless" ):
+	return "BLESS2"    
+    if (inputName=="bayesHammer" ):
+	return "BayesHammer"                
+    if (inputName=="bfc" ):
+	return "BFC"
+    if (inputName=="musket" ):
+	return "Musket"
+    if (inputName=="lighter" ):
+	return "Lighter"
+    if (inputName=="karect" ):
+	return "Karect"                
+    if (inputName=="fiona" ):
+	return "Fiona"
+    if (inputName=="trowel" ):
+	return "Trowel"
+    if (inputName=="racer" ):
+	return "RACER"
+    if (inputName=="sga" ):
+	return "SGA-EC"
+    if (inputName=="initial" ):
+	return "Uncorrected"
+    if (inputName=="Uncorrected" ):
+	return "Uncorrected"
+    
+    return "null"
 def find_between( s, first, last ):
     try:
         start = s.index( first ) + len( first )
@@ -68,8 +114,8 @@ def plotStackBarPer(methodNameSet,genomeNameSet,results,outFileName):
         fobw=open("real/countMismatch/"+g+"_per_.dat",'w')
         fobwa.writelines("# the following table represent number of mismatches in "+g+'\n');
         dataset=[];
-        fobw.writelines("tools	m_0	m_1_9	m_9"+'\n');
-        fobwa.writelines("tools	m_0	m_1_9	m_9"+'\n');
+        fobw.writelines("tools	m_0\tm_1\tm_2\tm_3_5\tm_6_9\tm_+9\tm_1_9"+'\n');
+        fobwa.writelines("tools	m_0\tm_1\tm_2\tm_3_5\tm_6_9\tm_+9\tm_1_9"+'\n');
         for r in results:
             if (r.genomName==g): 
                 for m in methodNameSet:
@@ -77,7 +123,7 @@ def plotStackBarPer(methodNameSet,genomeNameSet,results,outFileName):
                     order=[]
                     color=[]
                     if (r.method==m):
-                        row=m+"	"+str(r._00_matches_per)+"	"+str(r._1_9_matches_per)+"	"+str(r._m9_matches_per)
+                        row=changeMethodsName(m)+"	"+str(r._00_matches_per)+"\t"+str (r._01_matches_per)+"\t"+str (r._02_matches_per)+"\t"+str(r._3_5_matches_per)+"\t"+str(r._6_9_matches_per)+"\t"+str(r._m9_matches_per)+"\t"+str(r._1_9_matches_per)
                         fobw.writelines(row+'\n')
                         fobwa.writelines(row+'\n');
                     
@@ -400,6 +446,10 @@ def extractMismatch():
 
                     r._1_9_matches=r._01_matches+r._02_matches+r._03_matches+r._04_matches+r._05_matches+r._06_matches+r._07_matches+r._08_matches+r._09_matches
                     
+                    r._1_2_matches=r._01_matches+r._02_matches;
+		    r._3_5_matches=r._03_matches+r._04_matches+r._05_matches
+		    r._6_9_matches=r._06_matches+r._07_matches+r._08_matches+r._09_matches
+		    
                     r.numberOfAllReads=r._00_matches+r._01_matches+r._02_matches+r._03_matches+r._04_matches+r._05_matches+r._06_matches+r._07_matches+r._08_matches+r._09_matches+r._m9_matches
                     if (r.numberOfAllReads==0):
                         r._1_9_matches_per=0
@@ -420,7 +470,42 @@ def extractMismatch():
                         r._m9_matches_per=r._m9_matches*100/r.numberOfAllReads
                         r._m9_matches_per='{00:.2f}'.format(round (r._m9_matches_per, 4))
 
-                    #print("m9:", r._m9_matches_per, "1_9:", r._1_9_matches_per,"m0:", r._00_matches_per )
+
+                    if (r.numberOfAllReads==0):
+                        r._1_2_matches_per=0
+                    else:
+                        r._1_2_matches_per=r._1_2_matches*100/r.numberOfAllReads
+                        r._1_2_matches_per='{00:.2f}'.format(round (r._1_2_matches_per,4))
+
+
+                    if (r.numberOfAllReads==0):
+                        r._3_5_matches_per=0
+                    else:
+                        r._3_5_matches_per=r._3_5_matches*100/r.numberOfAllReads
+                        r._3_5_matches_per='{00:.2f}'.format(round (r._3_5_matches_per,4))
+
+
+
+                    if (r.numberOfAllReads==0):
+                        r._6_9_matches_per=0
+                    else:
+                        r._6_9_matches_per=r._6_9_matches*100/r.numberOfAllReads
+                        r._6_9_matches_per='{00:.2f}'.format(round (r._6_9_matches_per,4))
+                    
+                    
+                    if (r.numberOfAllReads==0):
+                        r._01_matches_per=0
+                    else:
+                        r._01_matches_per=r._01_matches*100/r.numberOfAllReads
+                        r._01_matches_per='{00:.2f}'.format(round (r._01_matches_per,4))
+                    
+                    if (r.numberOfAllReads==0):
+                        r._02_matches_per=0
+                    else:
+                        r._02_matches_per=r._02_matches*100/r.numberOfAllReads
+                        r._02_matches_per='{00:.2f}'.format(round (r._02_matches_per,4))
+                    
+                    
                     results.append(r)
 
     from operator import attrgetter

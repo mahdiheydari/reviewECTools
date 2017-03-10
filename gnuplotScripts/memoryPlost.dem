@@ -6,8 +6,8 @@ rm = 0.95
 gap = 0.03
 size = 0.75
 y1 = 0.0; y2 = 70; y3 = 120; y4 = 150
-set output "memory.pdf"
-set terminal pdf
+set output "memory.svg"
+set terminal svg
 set datafile missing '-'
 set style data linespoints
 set multiplot

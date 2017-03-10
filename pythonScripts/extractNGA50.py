@@ -1,3 +1,7 @@
+'''
+Copyright (C) 2016  Mahdi Heydari
+This script uses the cordination of quast to make essential data file to make plots'''
+
 import os, sys , re
 from operator import itemgetter, attrgetter, methodcaller
 class Result:

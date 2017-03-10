@@ -1,3 +1,6 @@
+'''
+Copyright (C) 2016  Mahdi Heydari
+this script makes the latex table for the error correction gain.'''
 import os, sys
 from operator import itemgetter, attrgetter, methodcaller
 class Result:
@@ -10,7 +13,9 @@ class Result:
  fp=0
  fn=0
  gain=""
-
+ specificity=""
+ sensitivity=""
+ fpRate=0
 
 def isfloat(value):
   try:
@@ -185,16 +190,19 @@ def MakeReaMappedTable(gresults,methodNameSet,genomeNameSet,gainName,outFileName
     fobw.write(title );
     fobw.write('\\\ \r')
     fobw.write('\\\ \r')
-    fobw.write('\\begin{adjustbox}{width=1\\textwidth}')
+    fobw.write('\\begin{adjustbox}{width=.9\\textwidth}')
     fobw.write('\\begin{tabular}{' );
  
-    factorSet=set();
-    factorSet.add(" Gain")
-    factorSet.add("TP")
-    factorSet.add("TN")
-    factorSet.add("FP")
-    factorSet.add("FN")
-    factorSet=sorted(factorSet)
+    #factorSet = [" Gain", "Sensitivity", "Specificity", "TP", "TN","FP","FN"]
+    factorSet = [ "TP", "TN","FP","FN"]
+    #factorSet[0]=" Gain"
+    #factorSet.add("TP")
+    #factorSet.add("TN")
+    #factorSet.add("FP")
+    #factorSet.add("FN")
+    #factorSet.add("sensitivity")
+    #factorSet.add("specificity")
+    #factorSet=sorted(factorSet)
     colNum=len(genomeNameSet)+2;
     temp="|c|"
     i=1;
@@ -240,6 +248,12 @@ def MakeReaMappedTable(gresults,methodNameSet,genomeNameSet,gainName,outFileName
                             if(factor_item=="FN"):
                                 tempVal=" & " +str(r.fn)
                                 find=1;
+                            if(factor_item=="Sensitivity"):
+                                tempVal=" & " +str(r.sensitivity)
+                                find=1;
+                            if(factor_item=="Specificity"):
+                                tempVal=" & " +str(r.specificity)
+                                find=1;
 
                 if (find):
                     tempLine=tempLine+tempVal
@@ -262,6 +276,173 @@ def MakeReaMappedTable(gresults,methodNameSet,genomeNameSet,gainName,outFileName
     fobw.write('\end{adjustbox}')
     fobw.write( '\end{landscape}')
 
+    fobw.write( '\end{document}')
+    fobw.close();
+
+def MakeReaMappedGainTable(gresults,methodNameSet,genomeNameSet,gainName,outFileName):
+    fobw=open(outFileName+"_"+gainName+"Paper.tex",'w')
+    fobw.writelines("\documentclass[a4paper,10pt]{article} \r");
+    fobw.writelines(" \\usepackage{multirow} \r");
+    fobw.writelines(" \\usepackage{pdflscape} \r");
+    fobw.writelines(" \\usepackage{adjustbox} \r")
+    fobw.writelines(" \\usepackage{datetime} \r")
+    fobw.writelines(" \\usepackage{booktabs} \r")
+    fobw.writelines('\\begin{document}   \r');
+    fobw.writelines('\\begin{landscape}   \r');
+    fobw.writelines('\\  \\footnote{ Compiled on \\today\ at \\currenttime} \r' );
+    title="Comparison of different Error Correction methods by looking at "+gainName +" \r"
+    fobw.write(title );
+    fobw.write('\\\ \r')
+    fobw.write('\\\ \r')
+    fobw.write('\\begin{adjustbox}{width=.5\\textwidth}')
+    fobw.write('\\begin{tabular}{' );
+    factorSet = [" Gain", "Sensitivity", "Specificity", "fpRate"]
+    colNum=len(genomeNameSet)+1;
+    temp="c"
+    i=1;
+    while (i<colNum):
+        temp=temp+"c"
+        i=i+1
+    fobw.writelines(temp+"l}\r");
+    fobw.writelines("\\\ \multicolumn{1}{ c } {} & \multicolumn{"+str( colNum-1)+"}{ c}{\\bf{DataSet}}  \r");
+    fobw.write("\\\ \multicolumn{1}{ c } {Tools} &")
+    temp=""
+    i=1
+    for g in genomeNameSet:
+        temp=temp+g+' & '
+        i=i+1
+    fobw.writelines(temp+ "\r")   
+    fobw.writelines(" \\\ \\toprule \r");
+    for factor_item in factorSet:
+        fobw.writelines("\\\ \multicolumn{1}{ c } {} & \multicolumn{"+str( colNum-1)+"}{ c}{\\bf{"+factor_item+ "}} \\\ \r");
+        i=0;
+        for meth_item in methodNameSet:
+            fobw.write('\multicolumn{1}{ c }{'+meth_item+'}')
+            tempLine="";
+            for g in genomeNameSet:
+                tempVal=""
+                find =0;
+                for r in gresults:
+                    if (r.genomName==g ):
+                        if (r.method==meth_item and r.gainName==gainName):                            
+                            if(factor_item==" Gain"):
+                                tempVal=" & " +str(r.gain)
+                                find=1;
+                            if(factor_item=="Sensitivity"):
+                                tempVal=" & " +str(r.sensitivity)
+                                find=1;
+                            if(factor_item=="Specificity"):
+                                tempVal=" & " +str(r.specificity)
+                                find=1;
+                            if(factor_item=="fpRate"):
+				tempVal=" & " +str(r.fpRate)
+                                find=1;
+                if (find):
+                    tempLine=tempLine+tempVal
+                else:
+                    tempLine=tempLine+" & "+"na "
+            tempLine=tempLine+' & '
+            fobw.write(tempLine)
+            i=i+1;
+	    if i!= len(methodNameSet):
+		fobw.write ('\\\ \r')
+        fobw.writelines(" \\\ \\toprule \r");
+    fobw.write('\end{tabular}');
+    fobw.write('\\\ \r')
+    fobw.write('\end{adjustbox}')
+    fobw.write( '\end{landscape}')
+    fobw.write( '\end{document}')
+    fobw.close();
+
+def MakeReaMappedGainTableByFactor(gresults,methodNameSet,genomeNameSet,gainName,outFileName,factorSet):
+    print(methodNameSet)
+    print(genomeNameSet)
+    fobw=open(outFileName+"_"+gainName,'w')
+    fobw.writelines("\documentclass[a4paper,10pt]{article} \r");
+    fobw.writelines(" \\usepackage{multirow} \r");
+    fobw.writelines(" \\usepackage{pdflscape} \r");
+    fobw.writelines(" \\usepackage{adjustbox} \r")
+    fobw.writelines(" \\usepackage{datetime} \r")
+    fobw.writelines(" \\usepackage{booktabs} \r")
+    fobw.writelines('\\begin{document}   \r');
+    fobw.writelines('\\begin{landscape}   \r');
+    fobw.writelines('\\  \\footnote{ Compiled on \\today\ at \\currenttime} \r' );
+    title="Comparison of different Error Correction methods by looking at "+gainName +" \r"
+    fobw.write(title );
+    fobw.write('\\\ \r')
+    fobw.write('\\\ \r')
+    fobw.write('\\begin{adjustbox}{width=.5\\textwidth}')
+    fobw.write('\\begin{tabular}{' );
+    #factorSet = [" Gain", "Sensitivity", "Specificity", "TP", "TN","FP","FN"]
+    colNum=len(genomeNameSet)+1;
+    temp="c"
+    i=1;
+    while (i<colNum):
+        temp=temp+"c"
+        i=i+1
+    fobw.writelines(temp+"l}\r");
+    fobw.writelines("\\\ \multicolumn{1}{ c } {} & \multicolumn{"+str( colNum-1)+"}{ c}{\\bf{DataSet}}  \r");
+    fobw.write("\\\ \multicolumn{1}{ c } {Tools} &")
+    temp=""
+    i=1
+    for g in genomeNameSet:
+        temp=temp+g+' & '
+        i=i+1
+    fobw.writelines(temp+ "\r")   
+    fobw.writelines(" \\\ \\toprule \r");
+    for factor_item in factorSet:
+        fobw.writelines("\\\ \multicolumn{1}{ c } {} & \multicolumn{"+str( colNum-1)+"}{ c}{\\bf{"+factor_item+ "}} \\\ \r");
+        i=0;
+        for meth_item in methodNameSet:
+            fobw.write('\multicolumn{1}{ c }{'+meth_item+'}')
+            tempLine="";
+            for g in genomeNameSet:
+                tempVal=""
+                find =0;
+                for r in gresults:
+		    #print (r.genomName)
+		    #print(g)
+                    if (r.genomName==g ):
+			#print(g)
+                        if (r.method==meth_item and r.gainName==gainName):
+			    if(factor_item==" Gain"):
+                                tempVal=" & " +str(r.gain)
+                                find=1;
+                            if(factor_item=="TP"):
+                                tempVal=" & " +str(r.tp)
+                                find=1;
+                            if(factor_item=="TN"):
+                                tempVal=" & " +str(r.tn)
+                                find=1;
+                            if(factor_item=="FP"):
+                                tempVal=" & " +str(r.fp)
+                                find=1;
+                            if(factor_item=="FN"):
+                                tempVal=" & " +str(r.fn)
+                                find=1;
+                            if(factor_item=="Sensitivity"):
+                                tempVal=" & " +str(r.sensitivity)
+                                find=1;
+                            if(factor_item=="Specificity"):
+                                tempVal=" & " +str(r.specificity)
+                                find=1;
+                            if(factor_item=="fpRate"):
+				tempVal=" & " +str(r.fpRate)
+                                find=1;
+                if (find):
+                    tempLine=tempLine+tempVal
+                else:
+                    tempLine=tempLine+" & "+"na "
+            tempLine=tempLine+' & '
+            fobw.write(tempLine)
+            i=i+1;
+	    if i!= len(methodNameSet):
+		fobw.write ('\\\ \r')
+        fobw.writelines(" \\\ \\toprule \r");
+    fobw.write('\end{tabular}');
+    fobw.write('\\\ \r')
+    fobw.write('\end{adjustbox}')
+    fobw.write( '\end{landscape}')
     fobw.write( '\end{document}')
     fobw.close();
     
@@ -290,7 +471,7 @@ def makeMappedReal():
             errorCorrGain=find_between(accuracyEva,"The Gain value percentage is: (","%)")
             errorCorrGain=errorCorrGain.strip()
             if (isfloat(errorCorrGain) and (errorCorrGain!="nan")):
-                errorCorrGain='{0:.2f}'.format(round( float( errorCorrGain),2))
+                errorCorrGain='{0:.1f}'.format(round( float( errorCorrGain),2))
             else:
                 errorCorrGain="na"
             try:
@@ -303,7 +484,6 @@ def makeMappedReal():
                 tn=int (find_between(accuracyEva,"TN:","FP").strip())
             except:
                 tn="na"
-                
             #print(tn)
             try:
                 fp=int (find_between(accuracyEva,"FP:","FN").strip())
@@ -315,8 +495,6 @@ def makeMappedReal():
             except:
                 fn="na"
             #print(fn)
-            
-      
             if methodName != "Uncorrected":
                 genomeNameSet.add(genomeName)
                 methodNameSet.add(methodName)
@@ -329,6 +507,18 @@ def makeMappedReal():
                 r.fp=fp
                 r.tn=tn
                 r.fn=fn
+                if (float( tn)+float( fp)!=0):
+		  r.specificity= '{0:.1f}'.format(float(tn*100)/(float( tn)+float( fp)));
+                else:
+		  r.specificity="n/a" 
+                #print(r.specificity)
+                if (float( tp)+float( fn)!=0):
+		  r.sensitivity= '{0:.1f}'.format(float( tp*100)/(float( tp)+float( fn)));
+                else:
+		  r.sensitivity="n/a"
+		r.fpRate='{0:.0f}'.format((1- float(tn)/(float( tn)+float( fp)))*1000000);
+		#print(r.fpRate)  
+		#print(r.sensitivity)
                 gainSet.add("ErrorCorrectionGain")
                 results.append(r)
 
@@ -359,8 +549,6 @@ def makeMappedReal():
                 fn=int (find_between(fullRecovery,"FN:","\n").strip())
             except:
                 fn="na"
-            #print(fn)
-            #print(fullRecovery)
             if methodName != "Uncorrected":
                 genomeNameSet.add(genomeName)
                 methodNameSet.add(methodName)
@@ -373,11 +561,25 @@ def makeMappedReal():
                 r.fp=fp
                 r.tn=tn
                 r.fn=fn
-                gainSet.add("FullRecoveryGain")
+                if (float( tn)+float( fp)!=0):
+		  r.specificity= '{0:.1f}'.format(float(tn*100)/(float( tn)+float( fp)));
+                else:
+		  r.specificity="n/a"
+		r.fpRate='{0:.2f}'.format((1- float(tn)/(float( tn)+float( fp)))*1000000);
+		#print(r.fpRate)  
+                #print(r.specificity)
+                if (float( tp)+float( fn)!=0):
+		  r.sensitivity= '{0:.1f}'.format(float( tp*100)/(float( tp)+float( fn)));
+                else:
+		  r.sensitivity="n/a"
+		#print(r.sensitivity)
+                #gainSet.add("FullRecoveryGain")  #uncomment this line if you want to have the full recovery statistic tables
                 results.append(r)
     results=sorted(results, key=attrgetter('method', 'genomName'))
     genomeNameSet=sorted(genomeNameSet)
+    print(genomeNameSet)
     methodNameSet=sorted(methodNameSet)
+    print(methodNameSet)
     colNum=2+len(genomeNameSet);
     #especifyBest( genomeNameSet,results, "errorCorrGain", 1)
     
@@ -387,9 +589,18 @@ def makeMappedReal():
     #MakeReaMappedTable(results,methodNameSet,genomeNameSet,sys.argv[2]);
     for gainName in gainSet:
         especifyMax(genomeNameSet,gainName,results)
-        print(gainName)
-        MakeReaMappedTable(results,methodNameSet,genomeNameSet, gainName,sys.argv[2]);#
-        makeGain(results,genomeNameSet,methodNameSet,gainName,sys.argv[2])
+        #print(gainName)
+        #MakeReaMappedTable(results,methodNameSet,genomeNameSet, gainName,sys.argv[2]);#
+        #MakeReaMappedGainTable(results,methodNameSet,genomeNameSet, gainName,sys.argv[2]);#
+        #makeGain(results,genomeNameSet,methodNameSet,gainName,sys.argv[2])
+        factorSet = [" Gain", "Sensitivity", "Specificity", "TP", "TN","FP","FN", "fpRate"]
+        MakeReaMappedGainTableByFactor(results,methodNameSet,genomeNameSet, gainName,sys.argv[2]+".all.tex",factorSet)
+        factorSet = [" Gain"]
+        MakeReaMappedGainTableByFactor(results,methodNameSet,genomeNameSet,gainName,sys.argv[2]+".onlyGain.tex",factorSet)
+	factorSet = [" Gain", "Sensitivity","Specificity" ,"fpRate"]
+        MakeReaMappedGainTableByFactor(results,methodNameSet,genomeNameSet,gainName,sys.argv[2]+".parameter.tex",factorSet)
+        factorSet = [ "TP", "TN","FP","FN"]
+        MakeReaMappedGainTableByFactor(results,methodNameSet,genomeNameSet,gainName,sys.argv[2]+".number.tex",factorSet)
     fobr.close();
     
 makeMappedReal()

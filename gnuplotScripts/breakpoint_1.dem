@@ -8,16 +8,22 @@ t = 75.0
 b = 300.0
 # h: height of output in pixels
 h = 150.0*n + t + b
+ytop= 30
 
 ### define functions to help set top/bottom margins
 top(i,n,h,t,b) = 1.0 - (t+(h-t-b)*(i-1)/n)/h
 bot(i,n,h,t,b) = 1.0 - (t+(h-t-b)*i/n)/h
 
+
 ### first set up some basic plot parameters
-#set term pngcairo enhanced size 800,h font 'FreeMono-Bold,14'
-set output "test2.pdf"
-set terminal pdf
-#set title 'BreakPoints'
+set term pngcairo enhanced size 800,h font 'FreeMono-Bold,14'
+set output "breakpoints1.svg"
+set terminal svg enhanced dashed background rgb 'white'
+
+#set output "breakpoints1.pdf"
+#set terminal pdf
+
+set lmargin "6"
 unset colorbox
 set palette defined (1 "#8dd3c7", 2 "#ffffb3", 3 "#bebada", 4 "#fb8072", 5 "#80b1d3", 6 "#fdb462", 7 "#b3de69", 8 "#fccde5", 9 "#d9d9d9", 10 "#bc80bd", 11 "#ccebc5" )
 #set cbrange[1:11]
@@ -25,96 +31,114 @@ set style data histogram
 set style histogram cluster gap 1
 set style fill solid
 set ytics 100
-set xrange [-5000:410000]
-set yrange [-.7:10] 
+set xrange [-500:482508]
+
+set yrange [-.7:ytop] 
 set ytics format ''
 set xtics format ''
 set multiplot layout (n+1),1
+
 ##---------------------------------------------------------------------
-set ylabel "ACE" font "sans, 5"
+
+set label 1 "A" at 172065,ytop+10 font ",10" front
+
+
+set ylabel "ACE" font "sans, 11" rotate by 45
 currentplot = 1
 set tmargin at screen top(currentplot,n,h,t,b)
 set bmargin at screen bot(currentplot,n,h,t,b)
-unset key
-plot "ace/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+unset key 
+plot "ace/21_1_sum.txt" using 1:($5+ytop):5 w boxes palette notitle,\
+     "ace/21_1_sum.txt" using 1:2 smooth freq lw 1 lt 1 lc rgb "blacke"  title "lost kmer ( k = 21 )"  with impulses
 ##---------------------------------------------------------------------
-set ylabel "BayesHammer" font "sans, 5"
+unset label 1
+set ylabel "BHammer" font "sans, 11"
 currentplot = currentplot + 1
 set tmargin at screen top(currentplot,n,h,t,b)
 set bmargin at screen bot(currentplot,n,h,t,b)
 unset title
-plot "bayesHammer/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+plot "bayesHammer/21_1_sum.txt" using 1:($5+ytop):5 w boxes palette notitle,\
+     "bayesHammer/21_1_sum.txt" using 1:2 smooth freq lw 1 lt 1 lc rgb "blacke"  title "lost kmer ( k = 21 )"  with impulses
 ##---------------------------------------------------------------------     
-set ylabel "BFC" font "sans, 5"
+set ylabel "BFC" font "sans, 11"
 currentplot = currentplot + 1
 set tmargin at screen top(currentplot,n,h,t,b)
 set bmargin at screen bot(currentplot,n,h,t,b)
 unset title
-plot "bfc/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+plot "bfc/21_1_sum.txt" using 1:($5+ytop):5 w boxes palette notitle,\
+"bfc/21_1_sum.txt" using 1:2 smooth freq lw 1 lt 1 lc rgb "blacke"  title "lost kmer ( k = 21 )"  with impulses
 
 ##---------------------------------------------------------------------
-set ylabel "BLESS2" font "sans, 5"
+set ylabel "BLESS2" font "sans, 11"
 currentplot = currentplot + 1
 set tmargin at screen top(currentplot,n,h,t,b)
 set bmargin at screen bot(currentplot,n,h,t,b)
 unset key
-plot "bless/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+plot "bless/21_1_sum.txt" using 1:($5+ytop):5 w boxes palette notitle,\
+"bless/21_1_sum.txt" using 1:2 smooth freq lw 1 lt 1 lc rgb "blacke"  title "lost kmer ( k = 21 )"  with impulses
 ##---------------------------------------------------------------------     
-set ylabel "Blue" font "sans, 5"
+set ylabel "Blue" font "sans, 11"
 currentplot = currentplot + 1
 set tmargin at screen top(currentplot,n,h,t,b)
 set bmargin at screen bot(currentplot,n,h,t,b)
 unset title
 unset key
-plot "blue/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+plot "blue/21_1_sum.txt" using 1:($5+ytop):5 w boxes palette notitle,\
+"blue/21_1_sum.txt" using 1:2 smooth freq lw 1 lt 1 lc rgb "blacke"  title "lost kmer ( k = 21 )"  with impulses
 
 ##---------------------------------------------------------------------
-set ylabel "Fiona" font "sans, 5"
+set ylabel "Fiona" font "sans, 11"
 currentplot = currentplot + 1
 set tmargin at screen top(currentplot,n,h,t,b)
 set bmargin at screen bot(currentplot,n,h,t,b)
 unset key
-plot "fiona/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+plot "fiona/21_1_sum.txt" using 1:($5+ytop):5 w boxes palette notitle,\
+"fiona/21_1_sum.txt" using 1:2 smooth freq lw 1 lt 1 lc rgb "blacke"  title "lost kmer ( k = 21 )"  with impulses
 ##---------------------------------------------------------------------     
-set ylabel "Karect" font "sans, 5"
+set ylabel "Karect" font "sans, 11"
 currentplot = currentplot + 1
 set tmargin at screen top(currentplot,n,h,t,b)
 set bmargin at screen bot(currentplot,n,h,t,b)
 unset title
-plot "karect/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+plot "karect/21_1_sum.txt" using 1:($5+ytop):5 w boxes palette notitle,\
+"karect/21_1_sum.txt" using 1:2 smooth freq lw 1 lt 1 lc rgb "blacke"  title "lost kmer ( k = 21 )"  with impulses
 
 ##---------------------------------------------------------------------
-set ylabel "Lighter" font "sans, 5"
+set ylabel "Lighter" font "sans, 11"
 currentplot = currentplot + 1
 set tmargin at screen top(currentplot,n,h,t,b)
 set bmargin at screen bot(currentplot,n,h,t,b)
 unset key
-plot "lighter/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+plot "lighter/21_1_sum.txt" using 1:($5+ytop):5 w boxes palette notitle,\
+"lighter/21_1_sum.txt" using 1:2 smooth freq lw 1 lt 1 lc rgb "blacke"  title "lost kmer ( k = 21 )"  with impulses
 ##---------------------------------------------------------------------     
-set ylabel "Musket" font "sans, 5"
+set ylabel "Musket" font "sans, 11"
 currentplot = currentplot + 1
 set tmargin at screen top(currentplot,n,h,t,b)
 set bmargin at screen bot(currentplot,n,h,t,b)
 unset title
-plot "musket/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+plot "musket/21_1_sum.txt" using 1:($5+ytop):5 w boxes palette notitle,\
+"musket/21_1_sum.txt" using 1:2 smooth freq lw 1 lt 1 lc rgb "blacke"  title "lost kmer ( k = 21 )"  with impulses
 ##---------------------------------------------------------------------
 
-set ylabel "RACER" font "sans, 5"
+set ylabel "RACER" font "sans, 11"
 currentplot = currentplot + 1
 set tmargin at screen top(currentplot,n,h,t,b)
 set bmargin at screen bot(currentplot,n,h,t,b)
 unset key
-plot "racer/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+plot "racer/21_1_sum.txt" using 1:($5+ytop):5 w boxes palette notitle,\
+"racer/21_1_sum.txt" using 1:2 smooth freq lw 1 lt 1 lc rgb "blacke"  title "lost kmer ( k = 21 )"  with impulses
 ##---------------------------------------------------------------------     
-set ylabel "SGA-EC" font "sans, 5"
+set ylabel "SGA-EC" font "sans, 11"
 currentplot = currentplot + 1
 set tmargin at screen top(currentplot,n,h,t,b)
 set bmargin at screen bot(currentplot,n,h,t,b)
 unset title
-plot "sga/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+plot "sga/21_1_sum.txt" using 1:($5+ytop):5 w boxes palette notitle,\
+"sga/21_1_sum.txt" using 1:2 smooth freq lw 1 lt 1 lc rgb "blacke"  title "lost kmer ( k = 21 )"  with impulses
 
 ##---------------------------------------------------------------------
-set ylabel "Trowel" font "sans, 5"
+set ylabel "Trowel" font "sans, 11"
 currentplot = currentplot + 1
 set tmargin at screen top(currentplot,n,h,t,b)
 set bmargin at screen bot(currentplot,n,h,t,b)
@@ -122,11 +146,9 @@ set xlabel 'bp'
 set xtics format "%10.0f"
 set xtics font ", 8"
 set xtics 50000
-plot "trowel/21_2.fasta" using 1:($5+10):5 w boxes palette notitle
+plot "trowel/21_1_sum.txt" using 1:($5+ytop):5 w boxes palette notitle,\
+"trowel/21_1_sum.txt" using 1:2 smooth freq lw 1 lt 1 lc rgb "blacke"  title "lost kmer ( k = 21 )"  with impulses
 ##---------------------------------------------------------------------
-
-
-
 
 
 

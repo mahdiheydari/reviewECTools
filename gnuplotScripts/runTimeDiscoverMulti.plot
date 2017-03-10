@@ -27,7 +27,7 @@ set key top left
 
 set yrange [0:]
 set xlabel "Error correctio tools" font "sans, 5" offset 0,-.75,-2
-set ylabel "Run time (minutes))"  font "sans, 5" offset 5,0,0
+set ylabel "Run time (minutes)"  font "sans, 5" offset 4.5,0,0
 
 set title "Bifidobacterium dentium" font "sans, 7"  offset 0,-.7
 plot for [COL=2:3] 'runTime/discovar/D1' using COL:xticlabels(1) notitle
@@ -50,7 +50,7 @@ plot for [COL=2:3] 'runTime/discovar/D6' using COL:xticlabels(1) notitle
 set title "Caenorhabditis elegans"
 plot for [COL=2:3] 'runTime/discovar/D7' using COL:xticlabels(1) notitle
 
-set key at 1,40000
+set key at 1,12000
 set key font "sans, 5"
 set title "Drosophila melanogaster" 
 plot for [COL=2:3] 'runTime/discovar/D8' using COL:xticlabels(1)

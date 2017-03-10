@@ -50,7 +50,7 @@ plot for [COL=2:3] 'runTime/spades/D6' using COL:xticlabels(1) notitle
 set title "Caenorhabditis elegans"
 plot for [COL=2:3] 'runTime/spades/D7' using COL:xticlabels(1) notitle
 
-set key at 1,75000
+set key at 1,50000
 set key font "sans, 5"
 set title "Drosophila melanogaster" 
 plot for [COL=2:3] 'runTime/spades/D8' using COL:xticlabels(1)

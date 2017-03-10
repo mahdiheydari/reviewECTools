@@ -1,3 +1,6 @@
+'''
+Copyright (C) 2016  Mahdi Heydari'''
+
 import sys
 def ReverseComplement(seq):
     for base in seq:

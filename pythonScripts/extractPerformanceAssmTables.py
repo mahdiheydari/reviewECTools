@@ -1,3 +1,6 @@
+'''
+Copyright (C) 2016  Mahdi Heydari
+This script make tables and essential file for making plots for memory and runtime of different tools.'''
 import os, sys
 import subprocess
 import time, math
@@ -28,11 +31,40 @@ def isfloat(value):
   except ValueError:
     return False
 
-
-
+def changeMethodsName(inputName):
+    if (inputName=="ace" ):
+	return "ACE"
+    if (inputName=="blue" ):
+	return "Blue"
+    if (inputName=="bless" ):
+	return "BLESS2"    
+    if (inputName=="bayesHammer" ):
+	return "BayesHammer"                
+    if (inputName=="bfc" ):
+	return "BFC"
+    if (inputName=="musket" ):
+	return "Musket"
+    if (inputName=="lighter" ):
+	return "Lighter"
+    if (inputName=="karect" ):
+	return "Karect"                
+    if (inputName=="fiona" ):
+	return "Fiona"
+    if (inputName=="trowel" ):
+	return "Trowel"
+    if (inputName=="racer" ):
+	return "RACER"
+    if (inputName=="sga" ):
+	return "SGA-EC"
+    if (inputName=="initial" ):
+	return "Uncorrected"
+    if (inputName=="Uncorrected" ):
+	return "Uncorrected"
+      
 def plotStackBarRunTime(methodNameSet,genomeNameSet,results, assemblerName):
     genomeNameSet=sorted(genomeNameSet)
     methodNameSet=sorted(methodNameSet)
+    #print(assemblerName)
     path = 'real/plots/runTime/'+assemblerName 
     if not os.path.exists(path):
         os.makedirs(path)
@@ -43,23 +75,26 @@ def plotStackBarRunTime(methodNameSet,genomeNameSet,results, assemblerName):
             if (r.genomName==g): 
                 for m in methodNameSet:
                     if (r.method==m and r.assmebler==assemblerName):
-                        row=m+"\t"+ str(r.toolWallTimeSeconds)+'\t'+str(r.assemblyWallTimeSeconds)
+                        row=changeMethodsName(m)+"\t"+ str(r.toolWallTimeSeconds)+'\t'+str(r.assemblyWallTimeSeconds)
                         fobw.writelines(row+'\n')
                         
                     
         fobw.close();
     fobw=open(path+"/allRuntime.dat", 'w')
+    #print(path+"/allRuntime.dat",)
+    fobw.writelines("Dataset");
     for m in methodNameSet:
         if (m!="Uncorrected"):
-            fobw.writelines("\t"+m);
+            fobw.writelines("\t"+changeMethodsName(m));
     fobw.writelines("\n");    
     for g in genomeNameSet:
         row=g
         for r in results:
             if (r.genomName==g): 
                 for m in methodNameSet:       
-                    if (r.method==m and r.assmebler==assemblerName):
-                        row=row+"\t"+ str(r.toolWallTimeSeconds)
+                    if (r.method==m and r.assmebler=="spades" and m!="Uncorrected"):
+                        #print(m+":"+str(r.toolWallTimeSeconds))
+                        row=row+"\t"+ str(round (r.toolWallTimeSeconds/60,2))
         fobw.writelines(row+'\n')
                 
 
@@ -77,9 +112,25 @@ def plotStackBarMemory(methodNameSet,genomeNameSet,results, assemblerName):
             if (r.genomName==g): 
                 for m in methodNameSet:
                     if (r.method==m and r.assmebler==assemblerName):
-                        row=m+"\t"+ str(r.toolMemory)+'\t'+str(r.assemblyMemory)
+                        row=changeMethodsName(m)+"\t"+ str(r.toolMemory)+'\t'+str(r.assemblyMemory)
                         fobw.writelines(row+'\n')
         fobw.close();
+    fobw=open(path+"/allMemory.dat", 'w')
+    #print(path+"/allRuntime.dat",)
+    fobw.writelines("Dataset");
+    for m in methodNameSet:
+        if (m!="Uncorrected"):
+            fobw.writelines("\t"+changeMethodsName(m));
+    fobw.writelines("\n");    
+    for g in genomeNameSet:
+        row=g
+        for r in results:
+            if (r.genomName==g): 
+                for m in methodNameSet:       
+                    if (r.method==m and r.assmebler=="spades" and m!="Uncorrected"):
+                        #print(m+":"+str(r.toolWallTimeSeconds))
+                        row=row+"\t"+ str(r.toolMemory)
+        fobw.writelines(row+'\n')
 def find_between( s, first, last ):
     try:
         start = s.index( first ) + len( first )
@@ -347,7 +398,7 @@ def makeMappedReal():
     asmNameSet=sorted(asmNameSet)
     especifyMin_wallTime(genomeNameSet,asmNameSet,results)
     especifyMin_Memory(genomeNameSet,asmNameSet,results)
-    
+    changeMethodsName(methodNameSet)
     colNum=2+len(genomeNameSet);
     #MakePerformanceTable(results,methodNameSet,genomeNameSet,sys.argv[2]);
     for asm in asmNameSet:

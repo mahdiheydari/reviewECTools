@@ -10,7 +10,11 @@
 	set arrow from 55,18 to 55,65  lw 1 front nohead        
 	set arrow from 45,65 to 55,65  lw 1 front nohead
 	set arrow from 45,18 to 45,65  lw 1 front nohead 
-	
+	set key font "sans, 14"
+	set ytics font "sans, 14"
+	set xtics font "sans, 14"
+	set xlabel font "sans, 14"
+	set ylabel font "sans, 14"
 	
 	set yrange [0:]
 	set xrange [0:100]
@@ -25,7 +29,7 @@
 	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/ace" using 1:2   smooth freq   lc rgb"#1f78b4" title "ACE",\
 	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/bayesHammer" using 1:2   smooth freq   lc rgb"#e31a1c" title "BayesHammer",\
 	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/bfc" using 1:2   smooth freq   lc rgb"#fb9a99" title "BFC",\
-	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/bless" using 1:2  smooth freq   lc rgb"#b2df8a"  title "BLESS2",\
+	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/bless" using 1:2  smooth freq   lc rgb"#b2df8a"  title "BLESS 2",\
 	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/blue" using 1:2   smooth freq   lc rgb"#33a02c" title "Blue",\
 	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/fiona" using 1:2  smooth freq   lc rgb "#fdbf6f" title "Fiona",\
 	    "/home/mahdi/Desktop/home/haloServerTables/real/plots/NGA50Data/spades/D8/karect" using 1:2   smooth freq   lc rgb"#ff7f00" title "Karect",\
